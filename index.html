@@ -41,6 +41,7 @@
             font-size: 1.8em;
             font-weight: bold;
             color: #d7141a;
+            cursor: pointer;
         }
 
         .nav-links {
@@ -59,6 +60,91 @@
 
         .nav-links a:hover {
             color: #d7141a;
+        }
+
+        /* Мобільне меню */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: #d7141a;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100vh;
+            background: white;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.3);
+            transition: left 0.3s ease;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .mobile-menu.active {
+            left: 0;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #d7141a;
+        }
+
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: #d7141a;
+        }
+
+        .mobile-menu-links {
+            list-style: none;
+        }
+
+        .mobile-menu-links li {
+            margin-bottom: 20px;
+        }
+
+        .mobile-menu-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.3em;
+            font-weight: 600;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .mobile-menu-links a:hover {
+            background: #f0f0f0;
+            color: #d7141a;
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            z-index: 1999;
+        }
+
+        .mobile-overlay.active {
+            display: block;
         }
 
         .container {
@@ -256,20 +342,19 @@
 
         @media (max-width: 768px) {
             .nav-container {
-                flex-direction: column;
-                gap: 15px;
+                flex-direction: row;
+                justify-content: space-between;
             }
 
             .nav-links {
-                flex-direction: column;
-                gap: 10px;
-                width: 100%;
-                text-align: center;
+                display: none;
             }
 
-            .nav-links a {
-                font-size: 1em;
-                padding: 10px;
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .mobile-menu {
                 display: block;
             }
             
@@ -353,7 +438,8 @@
 <body>
     <nav>
         <div class="nav-container">
-            <div class="logo">🇨🇿 Чехія</div>
+            <div class="logo" onclick="showSection('home')">🇨🇿 Чехія</div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
             <ul class="nav-links">
                 <li><a href="#" onclick="showSection('home')">🏠 Головна</a></li>
                 <li><a href="#" onclick="showSection('facts')">🎉 Цікаві факти</a></li>
@@ -363,6 +449,22 @@
             </ul>
         </div>
     </nav>
+
+    <!-- Мобільне меню -->
+    <div class="mobile-overlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu">
+        <div class="mobile-menu-header">
+            <div class="logo">🇨🇿 Чехія</div>
+            <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+        </div>
+        <ul class="mobile-menu-links">
+            <li><a href="#" onclick="showSection('home'); toggleMobileMenu()">🏠 Головна</a></li>
+            <li><a href="#" onclick="showSection('facts'); toggleMobileMenu()">🎉 Цікаві факти</a></li>
+            <li><a href="#" onclick="showSection('cities'); toggleMobileMenu()">🏙️ Міста</a></li>
+            <li><a href="#" onclick="showSection('statues'); toggleMobileMenu()">🗿 Пам'ятники</a></li>
+            <li><a href="#" onclick="showSection('culture'); toggleMobileMenu()">🎭 Культура</a></li>
+        </ul>
+    </div>
 
     <div class="container">
         <!-- Головна -->
@@ -999,6 +1101,14 @@
             
             // Прокрутити вгору
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.querySelector('.mobile-menu');
+            const overlay = document.querySelector('.mobile-overlay');
+            
+            menu.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
     </script>
 </body>
